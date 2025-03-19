@@ -1,0 +1,39 @@
+services:
+  db:
+    build: ./database
+    container_name: choice-game-db
+    ports:
+      - "7171:5432"
+    networks:
+      - boardgames-network
+
+  app:
+    build: ./backend
+    container_name: choice-game-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/choice_games_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FRONTEND_URL: http://localhost:7272
+    depends_on:
+      - db
+    ports:
+      - "7070:8080"
+    networks:
+      - boardgames-network
+      
+  front:
+    build: ./frontend
+    container_name: choice-game-frontend
+    environment:
+      VUE_APP_BACKEND_URL: http://localhost:7070
+    depends_on:
+      - app
+    ports:
+      - "7272:8080"
+    networks:
+      - boardgames-network
+
+networks:
+  boardgames-network:
+    driver: bridge
