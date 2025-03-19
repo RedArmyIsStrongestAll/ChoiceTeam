@@ -32,7 +32,7 @@ public class Controller {
     }
 
     @GetMapping("/expedition/tasks")
-    public List<TaskDTO> getExpedition(@RequestParam Long idExpedition) {
+    public List<TaskDTO> getAllTasks(@RequestParam Long idExpedition) {
         return expeditionService.getExpedition(idExpedition);
     }
 
@@ -40,6 +40,8 @@ public class Controller {
     public List<SubtaskDTO> getSubtasks(@RequestParam Long idTask) {
         return expeditionService.getSubtasks(idTask);
     }
+
+
 
     @PostMapping("/expedition/task")
     public Long addTask(@RequestBody TaskDTO taskDTO) {
@@ -51,12 +53,12 @@ public class Controller {
         return expeditionService.getLibrary();
     }
 
-    @PostMapping("/expedition/task/subtask")
+    @PostMapping("/library/subtasks")
     public Long addSubtask(@RequestParam Long idTask, @RequestBody SubtaskDTO subtaskDTO) {
         return expeditionService.addSubtask(idTask, subtaskDTO);
     }
 
-    @DeleteMapping("/expedition/task/subtask")
+    @DeleteMapping("/library/subtasks")
     public void deleteSubtask(@RequestParam Long idSubtask) {
         expeditionService.deleteSubtask(idSubtask);
     }

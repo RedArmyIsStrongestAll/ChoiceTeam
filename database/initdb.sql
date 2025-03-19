@@ -9,15 +9,15 @@ CREATE SCHEMA IF NOT EXISTS canban;
 SET search_path TO canban;
 
 -- Таблица Expedition (создаем первой, так как на нее есть ссылки)
-CREATE TABLE Expedition (
-    idExpedition SERIAL PRIMARY KEY,
+CREATE TABLE Expeditions (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     description VARCHAR(255)
 );
 
 -- Таблица Backlog
 CREATE TABLE Backlog (
-    idBackLogSubTask SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     type VARCHAR(255),
     difficult VARCHAR(255),
@@ -38,12 +38,12 @@ CREATE TEMP TABLE temp_table (
 
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5, column6)
-FROM "D:\Proggers\Java\ASE_practics\Grimuar.csv"
+FROM '\Grimuar.csv'
 DELIMITER ','
 CSV HEADER;
 
 -- Вставка данных в целевую таблицу с генерацией id
-INSERT INTO my_table(column1, column2, column3, column4, column5, column6)
+INSERT INTO Backlog(column1, column2, column3, column4, column5, column6)
 SELECT column1, column2, column3, column4, column5, column6
 FROM temp_table;
 
@@ -51,44 +51,38 @@ FROM temp_table;
 DROP TABLE temp_table;
 
 -- Таблица HeroEntity
-CREATE TABLE HeroEntity (
-    idHero SERIAL PRIMARY KEY,
+CREATE TABLE Heroes (
+    id SERIAL PRIMARY KEY,
     type VARCHAR(255),
     level INT,
     mana INT
 );
 
 -- Таблица HeroTeam
-CREATE TABLE HeroTeam (
-    idTeam SERIAL PRIMARY KEY,
+CREATE TABLE HeroesResolution (
+    id SERIAL PRIMARY KEY,
     idExpedition INT,
     idHero INT,
-    description VARCHAR(255),
-    FOREIGN KEY (idExpedition) REFERENCES Expedition(idExpedition),
-    FOREIGN KEY (idHero) REFERENCES HeroEntity(idHero)
+    FOREIGN KEY (idExpedition) REFERENCES Expeditions(id),
+    FOREIGN KEY (idHero) REFERENCES Heroes(id)
 );
 
 -- Таблица Tasks
 CREATE TABLE Tasks (
-    idTask SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     idExpedition INT,
     name VARCHAR(255),
     description VARCHAR(255),
-    FOREIGN KEY (idExpedition) REFERENCES Expedition(idExpedition)
+    FOREIGN KEY (idExpedition) REFERENCES Expeditions(id)
 );
 
 -- Таблица SubTasks
 CREATE TABLE SubTasks (
-    idSubTask SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     idTask INT,
-    FOREIGN KEY (idTask) REFERENCES Tasks(idTask)
+    idBackLog INT,
+    FOREIGN KEY (idTask) REFERENCES Tasks(id),
+    FOREIGN KEY (idBackLog) REFERENCES Backlog(id)
 );
 
--- Таблица SubTaskResolution
-CREATE TABLE SubTaskResolution (
-    idSubTask INT,
-    idBackLogSubTask INT,
-    PRIMARY KEY (idSubTask, idBackLogSubTask),
-    FOREIGN KEY (idSubTask) REFERENCES SubTasks(idSubTask),
-    FOREIGN KEY (idBackLogSubTask) REFERENCES Backlog(idBackLogSubTask)
-);
+
