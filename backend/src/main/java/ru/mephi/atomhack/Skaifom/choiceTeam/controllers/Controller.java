@@ -20,7 +20,6 @@ public class Controller {
     @Autowired
     private TeamService teamService;
 
-
     @PostMapping("/expedition")
     public Long addExpedition() {
         return expeditionService.addExpedition();
