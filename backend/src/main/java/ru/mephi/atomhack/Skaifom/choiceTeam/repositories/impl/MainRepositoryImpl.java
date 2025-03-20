@@ -163,6 +163,17 @@ public class MainRepositoryImpl implements MainRepository {
         }
     }
 
+    @Transactional
+    public void addHeroToExpedition(int expeditionId, int heroId) {
+        try {
+            String sqlHeroResolution = "INSERT INTO HeroResolution (idExpedition, idHero) VALUES (?, ?)";
+            jdbcTemplate.update(sqlHeroResolution, expeditionId, heroId);
+        } catch (Exception e) {
+            log.error("Error adding hero to expedition", e);
+        }
+    }
+
+
     private static class TaskRowMapper implements RowMapper<TaskDTO> {
         @Override
         public TaskDTO mapRow(ResultSet rs, int rowNum) throws SQLException {

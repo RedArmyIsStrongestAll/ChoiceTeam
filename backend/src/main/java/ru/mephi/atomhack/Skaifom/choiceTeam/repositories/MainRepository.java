@@ -28,4 +28,6 @@ public interface MainRepository {
     void removeTaskFromExpedition(int taskId);
 
     void removeExpedition(int expeditionId);
+
+    void addHeroToExpedition(int expeditionId, int heroId);
 }
