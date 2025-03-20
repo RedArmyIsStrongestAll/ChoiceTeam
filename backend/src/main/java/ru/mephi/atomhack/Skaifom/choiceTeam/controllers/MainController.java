@@ -24,9 +24,6 @@ public class MainController {
         this.teamServiceImpl = teamServiceImpl;
     }
 
-    //todo полный тест
-    //todo развёртывание в докере
-
     @PostMapping("/expeditions")
     public ResponseEntity<ExpeditionDTO> addExpedition(@RequestParam String name, @RequestParam String description) {
         return expeditionServiceImpl.addExpedition(name, description)
