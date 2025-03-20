@@ -67,7 +67,7 @@ public class MainRepositoryImpl implements MainRepository {
     @Transactional
     public List<HeroDTO> getHeroesByExpeditionId(int expeditionId) {
         String sql = """
-                    SELECT h.id, h.type, h.level, h.mana 
+                    SELECT h.id, h.type, h.level, h.manaStrat, h.manaMagic, h.manaBattle 
                     FROM Heroes h
                     JOIN HeroResolution hr ON h.id = hr.idHero
                     WHERE hr.idExpedition = ?
@@ -78,7 +78,9 @@ public class MainRepositoryImpl implements MainRepository {
                             rs.getInt("id"),
                             rs.getString("type"),
                             rs.getInt("level"),
-                            rs.getInt("mana")
+                            rs.getInt("manaStrat"),
+                            rs.getInt("manaMagic"),
+                            rs.getInt("manaBattle")
                     ), expeditionId);
         } catch (Exception e) {
             log.error("Ошибка при получении героев экспедиции {}: {}", expeditionId, e.getMessage());
