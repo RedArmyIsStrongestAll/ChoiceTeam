@@ -6,18 +6,36 @@ import org.ojalgo.optimisation.Variable;
 import org.springframework.stereotype.Service;
 import ru.mephi.atomhack.Skaifom.choiceTeam.dto.HeroDTO;
 import ru.mephi.atomhack.Skaifom.choiceTeam.ebtity.CharacterMana;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.MainRepository;
 import ru.mephi.atomhack.Skaifom.choiceTeam.services.TeamService;
 
 import java.util.List;
-
+/*
+    ID героев-сущностей
+    Прорицатель уровень 1: 1
+    Прорицатель уровень 2: 2
+    Прорицатель уровень 3: 3
+    Техномаг уровень 1: 4
+    Техномаг уровень 2: 5
+    Техномаг уровень 3: 6
+    Воин уровень 1: 7
+    Воин уровень 2: 8
+    Воин уровень 3: 9
+ */
 @Service
 public class TeamServiceImpl implements TeamService {
-    public List<HeroDTO> createTeam() {
-        //todo алгоритм
-        return null;
-    }
 
-    private void calculation() {
+    private final MainRepository mainRepositoryImpl;
+
+    public TeamServiceImpl(MainRepository mainRepositoryImpl) {this.mainRepositoryImpl = mainRepositoryImpl;}
+
+//    public List<HeroDTO> createTeam() {
+//        //todo алгоритм
+//        return null;
+//    }
+
+    @Override
+    public List<HeroDTO> createTeam(int idExpedition) {
         ExpressionsBasedModel model = new ExpressionsBasedModel();
 
         // Определяем переменные
@@ -82,16 +100,29 @@ public class TeamServiceImpl implements TeamService {
         // Решаем задачу оптимизации
         Optimisation.Result result = model.minimise();
 
-        // Выводим результаты
-        System.out.println("Оптимальное количество магов 1 уровня: " + x11.getValue().intValue());
-        System.out.println("Оптимальное количество магов 2 уровня: " + x12.getValue().intValue());
-        System.out.println("Оптимальное количество магов 3 уровня: " + x13.getValue().intValue());
-        System.out.println("Оптимальное количество воинов 1 уровня: " + x21.getValue().intValue());
-        System.out.println("Оптимальное количество воинов 2 уровня: " + x22.getValue().intValue());
-        System.out.println("Оптимальное количество воинов 3 уровня: " + x23.getValue().intValue());
-        System.out.println("Оптимальное количество стратегов 1 уровня: " + x31.getValue().intValue());
-        System.out.println("Оптимальное количество стратегов 2 уровня: " + x32.getValue().intValue());
-        System.out.println("Оптимальное количество стратегов 3 уровня: " + x33.getValue().intValue());
-        System.out.println("Минимальная суммарная затраченная мана: " + result.getValue());
+        //Добавляем героев в экспедицию
+        for (int i = 0; i < x11.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 1);
+        for (int i = 0; i < x12.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 2);
+        for (int i = 0; i < x13.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 3);
+        for (int i = 0; i < x21.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 4);
+        for (int i = 0; i < x22.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 5);
+        for (int i = 0; i < x23.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 6);
+        for (int i = 0; i < x31.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 7);
+        for (int i = 0; i < x32.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 8);
+        for (int i = 0; i < x33.getValue().intValue(); i++) mainRepositoryImpl.addHeroToExpedition(idExpedition, 9);
+
+        return mainRepositoryImpl.getHeroesByExpeditionId(idExpedition);
+
+//        // Выводим результаты
+//        System.out.println("Оптимальное количество магов 1 уровня: " + x11.getValue().intValue());
+//        System.out.println("Оптимальное количество магов 2 уровня: " + x12.getValue().intValue());
+//        System.out.println("Оптимальное количество магов 3 уровня: " + x13.getValue().intValue());
+//        System.out.println("Оптимальное количество воинов 1 уровня: " + x21.getValue().intValue());
+//        System.out.println("Оптимальное количество воинов 2 уровня: " + x22.getValue().intValue());
+//        System.out.println("Оптимальное количество воинов 3 уровня: " + x23.getValue().intValue());
+//        System.out.println("Оптимальное количество стратегов 1 уровня: " + x31.getValue().intValue());
+//        System.out.println("Оптимальное количество стратегов 2 уровня: " + x32.getValue().intValue());
+//        System.out.println("Оптимальное количество стратегов 3 уровня: " + x33.getValue().intValue());
+//        System.out.println("Минимальная суммарная затраченная мана: " + result.getValue());
     }
 }

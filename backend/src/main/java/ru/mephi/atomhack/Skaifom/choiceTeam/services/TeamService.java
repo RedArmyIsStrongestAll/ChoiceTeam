@@ -5,5 +5,5 @@ import ru.mephi.atomhack.Skaifom.choiceTeam.dto.HeroDTO;
 import java.util.List;
 
 public interface TeamService {
-    List<HeroDTO> createTeam();
+    List<HeroDTO> createTeam(int idExpedition);
 }
