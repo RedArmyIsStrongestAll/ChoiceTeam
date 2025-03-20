@@ -11,5 +11,7 @@ public class HeroDTO {
     private int id;
     private String type;
     private int level;
-    private int mana;
+    private int manaStrat;
+    private int manaMagic;
+    private int manaBattle;
 }

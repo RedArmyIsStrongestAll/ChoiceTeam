@@ -91,6 +91,6 @@ public class MainController {
 
     @GetMapping("/createTeam")
     public ResponseEntity<List<HeroDTO>> createTeam(@RequestParam int idExpedition) {
-        return ResponseEntity.ok(teamServiceImpl.createTeam());
+        return ResponseEntity.ok(teamServiceImpl.createTeam(idExpedition));
     }
 }

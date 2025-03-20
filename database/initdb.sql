@@ -51,8 +51,24 @@ CREATE TABLE Heroes (
     id SERIAL PRIMARY KEY,
     type VARCHAR(255),
     level INT,
-    mana INT
+    manaStrat INT,
+    manaMagic INT,
+    manaBattle INT
 );
+
+-- Импорт данных во временную таблицу
+COPY temp_table(column1, column2, column3, column4, column5)
+FROM 'C:\\D\\desktop\\HeroParam.csv'
+DELIMITER ';'
+CSV HEADER ENCODING 'UTF-8';
+
+-- Вставка данных в таблицу Backlog
+INSERT INTO Heroes(type, level, manaStrat, manaMagic, manaBattle)
+SELECT column1, column2, column3, column4, column5, column6
+FROM temp_table;
+
+-- Удаление временной таблицы (необязательно, так как она временная)
+DROP TABLE temp_table;
 
 -- Таблица HeroTeam
 CREATE TABLE HeroResolution (
