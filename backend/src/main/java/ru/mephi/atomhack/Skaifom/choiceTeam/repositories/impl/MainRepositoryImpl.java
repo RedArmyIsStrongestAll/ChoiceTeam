@@ -39,12 +39,16 @@ public class MainRepositoryImpl implements MainRepository {
     }
 
     @Transactional
-    public List<Integer> getAllExpeditionIds() {
+    public List<ExpeditionDTO> getAllExpeditionIds() {
         try {
-            String sql = "SELECT id FROM Expeditions";
-            return jdbcTemplate.queryForList(sql, Integer.class);
+            String sql = "SELECT id, name, description FROM Expeditions";
+            return jdbcTemplate.query(sql, (rs, rowNum) -> new ExpeditionDTO(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description")
+            ));
         } catch (Exception e) {
-            log.error("Error retrieving expedition IDs", e);
+            log.error("Error retrieving expeditions", e);
             return Collections.emptyList();
         }
     }

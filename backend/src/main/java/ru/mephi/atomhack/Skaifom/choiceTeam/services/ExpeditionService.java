@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ExpeditionService {
     Optional<ExpeditionDTO> addExpedition(String name, String description);
 
-    List<Integer> getAllExpeditionIds();
+    List<ExpeditionDTO> getAllExpeditionIds();
 
     List<HeroDTO> getHeroesByExpedition(int expeditionId);
 

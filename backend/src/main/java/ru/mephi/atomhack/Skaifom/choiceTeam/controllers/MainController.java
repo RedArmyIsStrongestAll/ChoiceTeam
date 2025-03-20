@@ -35,7 +35,7 @@ public class MainController {
     }
 
     @GetMapping("/expeditions")
-    public ResponseEntity<List<Integer>> getAllExpeditionIds() {
+    public ResponseEntity<List<ExpeditionDTO>> getAllExpeditionIds() {
         return ResponseEntity.ok(expeditionServiceImpl.getAllExpeditionIds());
     }
 

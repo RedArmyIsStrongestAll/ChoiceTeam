@@ -9,7 +9,7 @@ public interface MainRepository {
 
     Optional<ExpeditionDTO> addExpedition(String name, String description);
 
-    List<Integer> getAllExpeditionIds();
+    List<ExpeditionDTO> getAllExpeditionIds();
 
     List<TaskDTO> getTasksByExpeditionId(int expeditionId);
 

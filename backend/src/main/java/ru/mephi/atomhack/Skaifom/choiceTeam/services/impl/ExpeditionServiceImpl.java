@@ -26,7 +26,7 @@ public class ExpeditionServiceImpl implements ExpeditionService {
         return mainRepositoryImpl.addExpedition(name, description);
     }
 
-    public List<Integer> getAllExpeditionIds() {
+    public List<ExpeditionDTO> getAllExpeditionIds() {
         return mainRepositoryImpl.getAllExpeditionIds();
     }
 
