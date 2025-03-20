@@ -34,7 +34,7 @@ CREATE TEMP TABLE temp_table (
 
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5, column6)
-FROM './Grimuar.csv'
+FROM 'C:\\D\\desktop\\Grimuar.csv'
 DELIMITER ';'
 CSV HEADER ENCODING 'UTF-8';
 
@@ -56,15 +56,24 @@ CREATE TABLE Heroes (
     manaBattle INT
 );
 
+-- Создание временной таблицы
+CREATE TEMP TABLE temp_table (
+    column1 VARCHAR(255),
+    column2 INT,
+    column3 INT,
+    column4 INT,
+    column5 INT
+);
+
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5)
-FROM './HeroParam.csv' 
+FROM 'C:\\D\\desktop\\HeroParam.csv'
 DELIMITER ';'
 CSV HEADER ENCODING 'UTF-8';
 
 -- Вставка данных в таблицу Backlog
 INSERT INTO Heroes(type, level, manaStrat, manaMagic, manaBattle)
-SELECT column1, column2, column3, column4, column5, column6
+SELECT column1, column2, column3, column4, column5
 FROM temp_table;
 
 -- Удаление временной таблицы (необязательно, так как она временная)
