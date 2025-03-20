@@ -34,7 +34,7 @@ CREATE TEMP TABLE temp_table (
 
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5, column6)
-FROM 'C:\\D\\desktop\\Grimuar.csv'
+FROM '/docker-entrypoint-initdb.d/Grimuar.csv'
 DELIMITER ';'
 CSV HEADER ENCODING 'UTF-8';
 
@@ -67,7 +67,7 @@ CREATE TEMP TABLE temp_table (
 
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5)
-FROM 'C:\\D\\desktop\\HeroParam.csv'
+FROM '/docker-entrypoint-initdb.d/HeroParam.csv'
 DELIMITER ';'
 CSV HEADER ENCODING 'UTF-8';
 

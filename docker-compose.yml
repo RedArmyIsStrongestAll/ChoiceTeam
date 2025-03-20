@@ -11,7 +11,7 @@ services:
     build: ./backend
     container_name: choice-game-app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/choice_games_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/adventure
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_FRONTEND_URL: http://localhost:5173
