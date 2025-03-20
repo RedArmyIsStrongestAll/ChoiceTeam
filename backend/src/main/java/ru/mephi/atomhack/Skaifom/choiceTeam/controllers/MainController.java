@@ -1,6 +1,9 @@
 package ru.mephi.atomhack.Skaifom.choiceTeam.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.atomhack.Skaifom.choiceTeam.entity.*;
 import ru.mephi.atomhack.Skaifom.choiceTeam.services.ExpeditionService;
@@ -9,71 +12,85 @@ import ru.mephi.atomhack.Skaifom.choiceTeam.services.TeamService;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class MainController {
 
-    //todo всё через интерфейсы
+    private final ExpeditionService expeditionServiceImpl;
+    private final TeamService teamServiceImpl;
 
     @Autowired
-    private ExpeditionService expeditionService;
+    public MainController(ExpeditionService expeditionServiceImpl, TeamService teamServiceImpl) {
+        this.expeditionServiceImpl = expeditionServiceImpl;
+        this.teamServiceImpl = teamServiceImpl;
+    }
 
-    @Autowired
-    private TeamService teamService;
+    //todo полный тест
+    //todo развёртывание в докере
 
-    //todo тестирование всех методов
-
-    @PostMapping("/expedition")
-    public ExpeditionDTO addExpedition(@RequestParam String name, @RequestParam String description) {
-        return expeditionService.addExpedition(name, description);
+    @PostMapping("/expeditions")
+    public ResponseEntity<ExpeditionDTO> addExpedition(@RequestParam String name, @RequestParam String description) {
+        return expeditionServiceImpl.addExpedition(name, description)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @GetMapping("/expeditions")
-    public List<Integer> getAllExpeditionIds() {
-        return expeditionService.getAllExpeditionIds();
+    public ResponseEntity<List<Integer>> getAllExpeditionIds() {
+        return ResponseEntity.ok(expeditionServiceImpl.getAllExpeditionIds());
     }
 
     @GetMapping("/expedition/tasks")
-    public List<TaskDTO> getAllTasks(@RequestParam int idExpedition) {
-        return expeditionService.getExpeditionTasks(idExpedition);
+    public ResponseEntity<List<TaskDTO>> getAllTasks(@RequestParam int idExpedition) {
+        return ResponseEntity.ok(expeditionServiceImpl.getExpeditionTasks(idExpedition));
+    }
+
+    @GetMapping("/expedition/heroes")
+    public ResponseEntity<List<HeroDTO>> getExpeditionHeroes(@RequestParam int idExpedition) {
+        List<HeroDTO> heroes = expeditionServiceImpl.getHeroesByExpedition(idExpedition);
+        return heroes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(heroes);
     }
 
     @GetMapping("/expedition/task/subtasks")
-    public List<SubTaskDTO> getSubtasks(@RequestParam int idTask) {
-        return expeditionService.getSubtasks(idTask);
+    public ResponseEntity<List<SubTaskDTO>> getSubtasks(@RequestParam int idTask) {
+        return ResponseEntity.ok(expeditionServiceImpl.getSubtasks(idTask));
     }
 
     @GetMapping("/backlog")
-    public List<BacklogDTO> getBacklog() {
-        return expeditionService.getBacklog();
+    public ResponseEntity<List<BacklogDTO>> getBacklog() {
+        return ResponseEntity.ok(expeditionServiceImpl.getBacklog());
     }
 
     @PostMapping("/expedition/task/subtask")
-    public SubTaskDTO addSubtask(@RequestParam int idTask, @RequestParam int backlogId) {
-        return expeditionService.addSubtask(idTask, backlogId);
+    public ResponseEntity<SubTaskDTO> addSubtask(@RequestParam int idTask, @RequestParam int backlogId) {
+        return expeditionServiceImpl.addSubtask(idTask, backlogId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @PostMapping("/expedition/task")
-    public TaskDTO addTask(@RequestParam int idExpedition, @RequestParam String name, @RequestParam String description) {
-        return expeditionService.addTaskToExpedition(idExpedition, name, description);
+    public ResponseEntity<TaskDTO> addTask(@RequestParam int idExpedition, @RequestParam String name, @RequestParam String description) {
+        return expeditionServiceImpl.addTaskToExpedition(idExpedition, name, description)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @DeleteMapping("/expedition/task/subtask")
-    public void deleteSubtask(@RequestParam int idTask, @RequestParam int idSubtask) {
-        expeditionService.deleteSubtask(idTask, idSubtask);
+    public ResponseEntity<Void> deleteSubtask(@RequestParam int idTask, @RequestParam int idSubtask) {
+        return expeditionServiceImpl.deleteSubtask(idTask, idSubtask) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @DeleteMapping("/expedition/task")
-    public void deleteTask(@RequestParam int idTask) {
-        expeditionService.deleteTask(idTask);
+    public ResponseEntity<Void> deleteTask(@RequestParam int idTask) {
+        return expeditionServiceImpl.deleteTask(idTask) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @DeleteMapping("/expedition")
-    public void deleteExpedition(@RequestParam int idExpedition) {
-        expeditionService.deleteExpedition(idExpedition);
+    public ResponseEntity<Void> deleteExpedition(@RequestParam int idExpedition) {
+        return expeditionServiceImpl.deleteExpedition(idExpedition) ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/createTeam")
-    public List<HeroDTO> createTeam(@RequestParam int idExpedition) {
-        //todo тут алгоритм
-        return teamService.createTeam();
+    public ResponseEntity<List<HeroDTO>> createTeam(@RequestParam int idExpedition) {
+        return ResponseEntity.ok(teamServiceImpl.createTeam());
     }
 }
