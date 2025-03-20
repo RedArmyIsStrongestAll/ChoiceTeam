@@ -2,76 +2,72 @@ package ru.mephi.atomhack.Skaifom.choiceTeam.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.ExpeditionEntity;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.TaskEntity;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.SubtaskEntity;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.HeroTeamEntity;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.ExpeditionRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.SubtaskRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.TaskRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.TeamRepository;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.Expedition;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.SubTask;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.Task;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.ExpeditionsRepository;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.HeroesRepository;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.SubTasksRepository;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.TasksRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ExpeditionService {
 
     @Autowired
-    private ExpeditionRepository expeditionRepository;
+    private ExpeditionsRepository expeditionsRepository;
 
     @Autowired
-    private TaskRepository taskRepository;
+    private TasksRepository tasksRepository;
 
     @Autowired
-    private SubtaskRepository subtaskRepository;
+    private SubTasksRepository subTasksRepository;
 
     @Autowired
-    private TeamRepository teamRepository;
+    private HeroesRepository heroesRepository;
 
-    public Long addExpedition() {
-        ExpeditionEntity expedition = new ExpeditionEntity();
-        expeditionRepository.save(expedition);
-        return expedition.getIdExpedition();
+    public Integer addExpedition() {
+        Expedition expedition = new Expedition();
+        return expeditionsRepository.save(expedition).getId();
     }
 
-    public List<ExpeditionEntity> getAllExpeditions() {
-        return expeditionRepository.findAll();
+    public List<Expedition> getAllExpeditions() {
+        return expeditionsRepository.findAll();
     }
 
-    public List<TaskEntity> getExpedition(Long idExpedition) {
-        return taskRepository.findByExpedition_IdExpedition(idExpedition);
+    public List<Task> getExpedition(Integer idExpedition) {
+        return tasksRepository.findByExpeditionId(idExpedition);
     }
 
-    public List<SubtaskEntity> getSubtasks(Long idTask) {
-        return subtaskRepository.findByTask_IdTask(idTask);
+    public List<SubTask> getSubtasks(Integer idTask) {
+        return subTasksRepository.findByTaskId(idTask);
     }
 
-    public Long addTask(TaskEntity taskEntity) {
-        taskRepository.save(taskEntity);
-        return taskEntity.getIdTask();
+    public Integer addTask(Task task) {
+        return tasksRepository.save(task).getId();
     }
 
-    public List<SubtaskEntity> getLibrary() {
-        return subtaskRepository.findAll();
+    public List<SubTask> getLibrary() {
+        return subTasksRepository.findAll();
     }
 
-    public Long addSubtask(Long idTask, SubtaskEntity subtaskEntity) {
-        TaskEntity task = taskRepository.findById(idTask).orElseThrow();
-        subtaskEntity.setTask(task);
-        subtaskRepository.save(subtaskEntity);
-        return subtaskEntity.getIdSubTask();
+    public Integer addSubtask(Integer idTask, SubTask subtask) {
+        Task task = tasksRepository.findById(idTask).orElseThrow();
+        subtask.setTask(task);
+        return subTasksRepository.save(subtask).getId();
     }
 
-    public void deleteSubtask(Long idSubtask) {
-        subtaskRepository.deleteById(idSubtask);
+    public void deleteSubtask(Integer idSubtask) {
+        subTasksRepository.deleteById(idSubtask);
     }
 
-    public void deleteTask(Long idTask) {
-        taskRepository.deleteById(idTask);
+    public void deleteTask(Integer idTask) {
+        tasksRepository.deleteById(idTask);
     }
 
-    public void deleteExpedition(Long idExpedition) {
-        expeditionRepository.deleteById(idExpedition);
+    public void deleteExpedition(Integer idExpedition) {
+        expeditionsRepository.deleteById(idExpedition);
     }
 }
+
