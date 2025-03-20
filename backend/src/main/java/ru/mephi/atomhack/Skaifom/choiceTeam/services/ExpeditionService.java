@@ -16,6 +16,8 @@ public interface ExpeditionService {
 
     List<SubTaskDTO> getSubtasks(int taskId);
 
+    Optional<BacklogDTO> getSubtaskInBacklog(int backlogTaskId);
+
     List<BacklogDTO> getBacklog();
 
     Optional<SubTaskDTO> addSubtask(int taskId, int backlogId);

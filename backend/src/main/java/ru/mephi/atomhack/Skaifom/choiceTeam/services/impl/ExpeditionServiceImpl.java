@@ -42,6 +42,10 @@ public class ExpeditionServiceImpl implements ExpeditionService {
         return mainRepositoryImpl.getSubTasksByTaskId(taskId);
     }
 
+    public Optional<BacklogDTO> getSubtaskInBacklog(int backlogTaskId) {
+        return mainRepositoryImpl.getSubTasksInBacklogByBacklogTaskId(backlogTaskId);
+    }
+
     public List<BacklogDTO> getBacklog() {
         return mainRepositoryImpl.getAllBacklogEntries();
     }

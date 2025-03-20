@@ -17,6 +17,8 @@ public interface MainRepository {
 
     List<SubTaskDTO> getSubTasksByTaskId(int taskId);
 
+    Optional<BacklogDTO> getSubTasksInBacklogByBacklogTaskId(int backlogTaskId);
+
     List<BacklogDTO> getAllBacklogEntries();
 
     Optional<SubTaskDTO> addSubTaskToTask(int taskId, int backlogId);

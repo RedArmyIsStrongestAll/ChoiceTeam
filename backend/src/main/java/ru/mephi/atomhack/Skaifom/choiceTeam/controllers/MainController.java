@@ -52,6 +52,13 @@ public class MainController {
         return ResponseEntity.ok(expeditionServiceImpl.getSubtasks(idTask));
     }
 
+    @GetMapping("/expedition/task/subtasks")
+    public ResponseEntity<BacklogDTO> getSubtaskInBacklog(@RequestParam int backlogTaskId) {
+        return expeditionServiceImpl.getSubtaskInBacklog(backlogTaskId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
     @GetMapping("/backlog")
     public ResponseEntity<List<BacklogDTO>> getBacklog() {
         return ResponseEntity.ok(expeditionServiceImpl.getBacklog());

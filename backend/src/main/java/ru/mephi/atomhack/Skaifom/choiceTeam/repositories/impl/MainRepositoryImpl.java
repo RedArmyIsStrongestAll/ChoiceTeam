@@ -100,6 +100,17 @@ public class MainRepositoryImpl implements MainRepository {
     }
 
     @Transactional
+    public Optional<BacklogDTO> getSubTasksInBacklogByBacklogTaskId(int backlogTaskId) {
+        try {
+            String sql = "SELECT id, name, type, difficult, manaStrat, manaMagic, manaBattle FROM Backlog WHERE id = ?";
+            return Optional.of(jdbcTemplate.queryForObject(sql, new BacklogRowMapper(), backlogTaskId));
+        } catch (Exception e) {
+            log.error("Error retrieving backlog entries", e);
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
     public List<BacklogDTO> getAllBacklogEntries() {
         try {
             String sql = "SELECT id, name, type, difficult, manaStrat, manaMagic, manaBattle FROM Backlog";
