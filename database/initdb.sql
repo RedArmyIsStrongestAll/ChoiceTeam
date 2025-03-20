@@ -1,12 +1,8 @@
-CREATE DATABASE Adventure;
+CREATE DATABASE adventure;
 
-\c Adventure;
+\c adventure;
 
--- Создаем схему, если она еще не существует
-CREATE SCHEMA IF NOT EXISTS canban;
-
--- Устанавливаем схему по умолчанию
-SET search_path TO canban;
+SET search_path TO adventure, public;
 
 -- Таблица Expedition (создаем первой, так как на нее есть ссылки)
 CREATE TABLE Expeditions (
@@ -38,12 +34,12 @@ CREATE TEMP TABLE temp_table (
 
 -- Импорт данных во временную таблицу
 COPY temp_table(column1, column2, column3, column4, column5, column6)
-FROM '\Grimuar.csv'
-DELIMITER ','
-CSV HEADER;
+FROM 'C:\\D\\desktop\\Grimuar.csv'
+DELIMITER ';'
+CSV HEADER ENCODING 'UTF-8';
 
--- Вставка данных в целевую таблицу с генерацией id
-INSERT INTO Backlog(column1, column2, column3, column4, column5, column6)
+-- Вставка данных в таблицу Backlog
+INSERT INTO Backlog(name, type, difficult, manaStrat, manaMagic, manaBattle)
 SELECT column1, column2, column3, column4, column5, column6
 FROM temp_table;
 
@@ -59,7 +55,7 @@ CREATE TABLE Heroes (
 );
 
 -- Таблица HeroTeam
-CREATE TABLE HeroesResolution (
+CREATE TABLE HeroResolution (
     id SERIAL PRIMARY KEY,
     idExpedition INT,
     idHero INT,
@@ -80,9 +76,14 @@ CREATE TABLE Tasks (
 CREATE TABLE SubTasks (
     id SERIAL PRIMARY KEY,
     idTask INT,
-    idBackLog INT,
-    FOREIGN KEY (idTask) REFERENCES Tasks(id),
-    FOREIGN KEY (idBackLog) REFERENCES Backlog(id)
+    FOREIGN KEY (idTask) REFERENCES Tasks(id)
 );
 
-
+-- Таблица SubTaskResolution
+CREATE TABLE SubTaskResolution (
+    id INT,
+    idBackLogSubTask INT,
+    PRIMARY KEY (id, idBackLogSubTask),
+    FOREIGN KEY (id) REFERENCES SubTasks(id),
+    FOREIGN KEY (idBackLogSubTask) REFERENCES Backlog(id)
+);

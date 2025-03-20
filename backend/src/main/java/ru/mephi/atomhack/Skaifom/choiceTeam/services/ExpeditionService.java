@@ -2,72 +2,64 @@ package ru.mephi.atomhack.Skaifom.choiceTeam.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.Expedition;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.SubTask;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.Task;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.ExpeditionsRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.HeroesRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.SubTasksRepository;
-import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.TasksRepository;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.BacklogDTO;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.ExpeditionDTO;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.SubTaskDTO;
+import ru.mephi.atomhack.Skaifom.choiceTeam.entity.TaskDTO;
+import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.MainRepository;
 
 import java.util.List;
 
 @Service
 public class ExpeditionService {
 
-    @Autowired
-    private ExpeditionsRepository expeditionsRepository;
+    //todo всё через интерфейсы
 
     @Autowired
-    private TasksRepository tasksRepository;
+    private final MainRepository mainRepository;
 
-    @Autowired
-    private SubTasksRepository subTasksRepository;
-
-    @Autowired
-    private HeroesRepository heroesRepository;
-
-    public Integer addExpedition() {
-        Expedition expedition = new Expedition();
-        return expeditionsRepository.save(expedition).getId();
+    public ExpeditionService(MainRepository mainRepository) {
+        this.mainRepository = mainRepository;
     }
 
-    public List<Expedition> getAllExpeditions() {
-        return expeditionsRepository.findAll();
+    public ExpeditionDTO addExpedition(String name, String description) {
+        return mainRepository.addExpedition(name, description);
     }
 
-    public List<Task> getExpedition(Integer idExpedition) {
-        return tasksRepository.findByExpeditionId(idExpedition);
+    public List<Integer> getAllExpeditionIds() {
+        return mainRepository.getAllExpeditionIds();
     }
 
-    public List<SubTask> getSubtasks(Integer idTask) {
-        return subTasksRepository.findByTaskId(idTask);
+    public List<TaskDTO> getExpeditionTasks(int expeditionId) {
+        return mainRepository.getTasksByExpeditionId(expeditionId);
     }
 
-    public Integer addTask(Task task) {
-        return tasksRepository.save(task).getId();
+    public List<SubTaskDTO> getSubtasks(int taskId) {
+        return mainRepository.getSubTasksByTaskId(taskId);
     }
 
-    public List<SubTask> getLibrary() {
-        return subTasksRepository.findAll();
+    public List<BacklogDTO> getBacklog() {
+        return mainRepository.getAllBacklogEntries();
     }
 
-    public Integer addSubtask(Integer idTask, SubTask subtask) {
-        Task task = tasksRepository.findById(idTask).orElseThrow();
-        subtask.setTask(task);
-        return subTasksRepository.save(subtask).getId();
+    public SubTaskDTO addSubtask(int taskId, int backlogId) {
+        return mainRepository.addSubTaskToTask(taskId, backlogId);
     }
 
-    public void deleteSubtask(Integer idSubtask) {
-        subTasksRepository.deleteById(idSubtask);
+    public TaskDTO addTaskToExpedition(int expeditionId, String name, String description) {
+        return mainRepository.addTaskToExpedition(expeditionId, name, description);
     }
 
-    public void deleteTask(Integer idTask) {
-        tasksRepository.deleteById(idTask);
+    public void deleteSubtask(int taskId, int subTaskId) {
+        mainRepository.removeSubTaskFromTask(taskId, subTaskId);
     }
 
-    public void deleteExpedition(Integer idExpedition) {
-        expeditionsRepository.deleteById(idExpedition);
+    public void deleteTask(int taskId) {
+        mainRepository.removeTaskFromExpedition(taskId);
+    }
+
+    public void deleteExpedition(int expeditionId) {
+        mainRepository.removeExpedition(expeditionId);
     }
 }
 
