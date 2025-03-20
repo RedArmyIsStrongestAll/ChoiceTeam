@@ -2,6 +2,7 @@ package ru.mephi.atomhack.Skaifom.choiceTeam.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,8 +25,16 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/swagger-ui/**.css",
                                         "/swagger-ui/**.js", "/swagger-ui/**.html").permitAll()
 
-                                .anyRequest().authenticated())
-//                .addFilterAfter(new RoleFromHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
+                                .requestMatchers(HttpMethod.POST, "/expeditions", "/expedition/task", "/expedition/task/subtask").hasRole("MAESTER")
+                                .requestMatchers(HttpMethod.GET, "/expeditions", "/expedition", "/expedition/tasks", "/expedition/heroes").hasRole("MAESTER")
+                                .requestMatchers(HttpMethod.POST, "/createTeam").hasRole("MAESTER")
+
+                                .requestMatchers(HttpMethod.GET, "/backlog").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.POST, "/expedition/task/subtask").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/expedition/task/subtask").hasRole("LIBRARIAN")
+
+                                .anyRequest().permitAll())
+                .addFilterAfter(new RoleFromHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((session) ->
                         session.maximumSessions(1))
         ;
