@@ -3,3 +3,6 @@ ENV POSTGRES_USERNAME=postgres
 ENV POSTGRES_PASSWORD=postgres
 
 COPY initdb.sql /docker-entrypoint-initdb.d/
+COPY test-data.sql /docker-entrypoint-initdb.d/
+COPY Grimuar.csv /docker-entrypoint-initdb.d/
+COPY HeroParam.csv /docker-entrypoint-initdb.d/

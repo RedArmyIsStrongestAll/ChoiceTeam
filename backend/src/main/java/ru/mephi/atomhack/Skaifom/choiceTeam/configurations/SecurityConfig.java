@@ -25,13 +25,13 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/swagger-ui/**.css",
                                         "/swagger-ui/**.js", "/swagger-ui/**.html").permitAll()
 
-                                .requestMatchers(HttpMethod.POST, "/expeditions", "/expedition/task", "/expedition/task/subtask").hasRole("MAESTER")
-                                .requestMatchers(HttpMethod.GET, "/expeditions", "/expedition", "/expedition/tasks", "/expedition/heroes").hasRole("MAESTER")
-                                .requestMatchers(HttpMethod.POST, "/createTeam").hasRole("MAESTER")
+                                .requestMatchers(HttpMethod.POST, "/expeditions", "/expedition/task", "/expedition/task/subtask").hasRole("1")
+                                .requestMatchers(HttpMethod.GET, "/expeditions", "/expedition", "/expedition/tasks", "/expedition/heroes").hasRole("1")
+                                .requestMatchers(HttpMethod.POST, "/createTeam").hasRole("1")
 
-                                .requestMatchers(HttpMethod.GET, "/backlog").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.POST, "/expedition/task/subtask").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/expedition/task/subtask").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/backlog").hasRole("2")
+                                .requestMatchers(HttpMethod.POST, "/expedition/task/subtask").hasRole("2")
+                                .requestMatchers(HttpMethod.DELETE, "/expedition/task/subtask").hasRole("2")
 
                                 .anyRequest().permitAll())
                 .addFilterAfter(new RoleFromHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
