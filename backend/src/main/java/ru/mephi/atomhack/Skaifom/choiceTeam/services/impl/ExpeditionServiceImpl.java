@@ -3,7 +3,7 @@ package ru.mephi.atomhack.Skaifom.choiceTeam.services.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.*;
+import ru.mephi.atomhack.Skaifom.choiceTeam.dto.*;
 import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.MainRepository;
 import ru.mephi.atomhack.Skaifom.choiceTeam.services.ExpeditionService;
 

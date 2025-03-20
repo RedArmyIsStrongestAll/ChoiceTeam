@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.*;
+import ru.mephi.atomhack.Skaifom.choiceTeam.dto.*;
 import ru.mephi.atomhack.Skaifom.choiceTeam.repositories.MainRepository;
 
 import java.sql.ResultSet;

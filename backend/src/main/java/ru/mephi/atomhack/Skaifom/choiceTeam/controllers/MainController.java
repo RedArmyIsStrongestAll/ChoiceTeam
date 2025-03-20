@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.*;
+import ru.mephi.atomhack.Skaifom.choiceTeam.dto.*;
 import ru.mephi.atomhack.Skaifom.choiceTeam.services.ExpeditionService;
 import ru.mephi.atomhack.Skaifom.choiceTeam.services.TeamService;
 

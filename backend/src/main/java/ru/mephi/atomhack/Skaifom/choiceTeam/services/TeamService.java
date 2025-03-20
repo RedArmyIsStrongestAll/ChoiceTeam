@@ -1,6 +1,6 @@
 package ru.mephi.atomhack.Skaifom.choiceTeam.services;
 
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.HeroDTO;
+import ru.mephi.atomhack.Skaifom.choiceTeam.dto.HeroDTO;
 
 import java.util.List;
 

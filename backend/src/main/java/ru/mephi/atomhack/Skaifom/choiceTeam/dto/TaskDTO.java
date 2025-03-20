@@ -1,4 +1,4 @@
-package ru.mephi.atomhack.Skaifom.choiceTeam.entity;
+package ru.mephi.atomhack.Skaifom.choiceTeam.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

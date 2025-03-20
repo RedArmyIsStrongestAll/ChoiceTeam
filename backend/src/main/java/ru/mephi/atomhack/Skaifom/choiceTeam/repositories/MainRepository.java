@@ -1,6 +1,6 @@
 package ru.mephi.atomhack.Skaifom.choiceTeam.repositories;
 
-import ru.mephi.atomhack.Skaifom.choiceTeam.entity.*;
+import ru.mephi.atomhack.Skaifom.choiceTeam.dto.*;
 
 import java.util.List;
 import java.util.Optional;
